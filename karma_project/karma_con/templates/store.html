@@ -1,0 +1,115 @@
+{% extends 'partials/_base.html' %}
+
+{% load static %}
+
+{% block content  %}
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Store page</h1>
+					<nav class="d-flex align-items-center">
+						<a href="{% url 'index' %}">Home<span class="lnr lnr-arrow-right"></span></a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-3 col-lg-4 col-md-5">
+				<div class="sidebar-categories">
+					<div class="head">Brands</div>
+					{% for brand in brands %}
+                            <ul>
+                                <li class = 'main-nav-list child'><a href="{% url  'products_by_brand' brand.slug %}">{{brand.name}}</a></li>
+                            </ul>
+                    {% endfor %}
+					
+				</div>
+				<div class="sidebar-filter mt-50">
+					<div class="top-filter-head">Product Filters</div>
+					<div class="common-filter">
+						<div class="head">Color</div>
+						<form action="#">
+							<ul>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="black" name="color"><label for="black">Black<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="balckleather" name="color"><label for="balckleather">Black
+										Leather<span>(29)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="blackred" name="color"><label for="blackred">Black
+										with red<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="gold" name="color"><label for="gold">Gold<span>(19)</span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
+							</ul>
+						</form>
+					</div>
+					<div class="common-filter">
+						<div class="head">Price</div>
+						<div class="price-range-area">
+							<div id="price-range"></div>
+							<div class="value-wrapper d-flex">
+								<div class="price">Price:</div>
+								<span>$</span>
+								<div id="lower-value"></div>
+								<div class="to">to</div>
+								<span>$</span>
+								<div id="upper-value"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-9 col-lg-8 col-md-7">
+				
+				<!-- End Filter Bar -->
+				<!-- Start Best Seller -->
+				<section class="lattest-product-area pb-40 category-list">
+					<div class="row">
+						<!-- single product -->
+						{% for product in products %}
+						<div class="col-lg-4 col-md-6">
+							<div class="single-product">
+								<img class="img-fluid rounded" src={{product.image.url}} alt="" style="width: 260px; height: 260px;" >
+								<div class="product-details">
+									<h6>{{product.name}}</h6>
+									<div class="price">
+										<h6>${{product.price}}</h6>
+										
+									</div>
+									<div class="prd-bottom">
+										<a href="{% url 'product' product.id %}" class="social-info">
+											<span class="lnr lnr-move"></span>
+											<p class="hover-text">view more</p>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+	<div style="text-align: center;">
+		{% if page_obj.has_previous %}
+		  <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary">Previous</a>
+		  {% endif %}
+	   
+		  {% for i in page_obj.paginator.page_range %}
+		  {% if page_obj.number == i %}
+		  <a href="?page={{ i }}" class="active btn btn-primary" style="color: #000000;rgba(0, 0, 0, 0.932) !important;">{{ i }}</a>
+		  {% else %}
+		  <a href="?page={{ i }}" class="btn btn-primary">{{ i }}</a>
+		  {% endif %}
+		  {% endfor %}
+	   
+		  {% if page_obj.has_next %}
+		  <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary">Next</a>
+		  {% endif %}
+	   </div>
+	   <br>
+	{% endblock %}
